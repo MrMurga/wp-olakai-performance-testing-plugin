@@ -3,7 +3,7 @@ class Wp_Olakai_Performance_Testing_Plugin_Admin_Tools {
 	private $action_lighthouse_run;
 	private $action_report;
 
-	public function __construct($pluginName, $pluginVersion) {
+	public function __construct() {
 		$this->action_lighthouse_run = sprintf("page-%s-run", "wp-olakai-performance-testing-plugin");
 		$this->action_report = sprintf("page-%s-run", "report");
 		$this->action_json_parser = sprintf("%s-%s", "wp-olakai-performance-testing-plugin", "json_parser");

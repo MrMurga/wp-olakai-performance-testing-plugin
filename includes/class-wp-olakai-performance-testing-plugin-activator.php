@@ -30,7 +30,8 @@ class Wp_Olakai_Performance_Testing_Plugin_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		$url = apply_filters(Wp_Olakai_Performance_Testing_Filters::OLAKAI_ENDPOINT_URL, null);
+		Wp_Olakai_Performance_Testing_Network_Utilities::post($url, null);
 	}
 
 }

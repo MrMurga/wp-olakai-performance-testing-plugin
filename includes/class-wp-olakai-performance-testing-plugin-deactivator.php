@@ -30,7 +30,8 @@ class Wp_Olakai_Performance_Testing_Plugin_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		$url = apply_filters(Wp_Olakai_Performance_Testing_Filters::OLAKAI_ENDPOINT_URL, null);
+		Wp_Olakai_Performance_Testing_Network_Utilities::delete($url);
 	}
 
 }

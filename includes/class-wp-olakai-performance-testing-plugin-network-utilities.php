@@ -8,7 +8,7 @@ class Wp_Olakai_Performance_Testing_Network_Utilities {
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
 		$headers = array(
-			"X-OLAKAI-CONSULTING-CUSTOMER: {$_SERVER['HTTP_HOST']}",
+			"X-OLAKAI-CONSULTING-CUSTOMER: ". parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST),
 			"accept: */*",
 			"user-agent: ". WP_OLAKAI_PERFORMANCE_TESTING_USER_AGENT,
 		);
@@ -23,7 +23,19 @@ class Wp_Olakai_Performance_Testing_Network_Utilities {
 
     public static function head($url, $timeout = WP_OLAKAI_PERFORMANCE_TESTING_HEAD_TIMEOUT_MS) {
 		$ch = self::common($url, $timeout);
-		
+		curl_setopt($ch, CURLOPT_NOBODY, true);
+
+		$result = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		return ["code" => $httpcode, "content" => $result];
+	}
+
+	public static function delete($url, $timeout = WP_OLAKAI_PERFORMANCE_TESTING_HEAD_TIMEOUT_MS) {
+		$ch = self::common($url, $timeout);
+		curl_setopt($ch, CURLOPT_NOBODY, true);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+
 		$result = curl_exec($ch);
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 

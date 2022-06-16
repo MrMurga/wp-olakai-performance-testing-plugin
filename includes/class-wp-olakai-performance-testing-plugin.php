@@ -1,6 +1,4 @@
 <?php
-require_once plugin_dir_path( __FILE__ ) . '/class-wp-olakai-performance-testing-plugin-settings.php';
-require_once plugin_dir_path( __FILE__ ) . '/class-wp-olakai-performance-testing-plugin-admin-page-columns.php';
 require_once plugin_dir_path( __FILE__ ) . '/class-wp-olakai-performance-testing-plugin-admin-tools.php';
 require_once plugin_dir_path( __FILE__ ) . '/class-wp-olakai-performance-testing-plugin-network-utilities.php';
 require_once plugin_dir_path( __FILE__ ) . '/class-wp-olakai-performance-testing-plugin-filters.php';
@@ -85,9 +83,6 @@ class Wp_Olakai_Performance_Testing_Plugin {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
-		$this->ping();
-		
 	}
 
 	/**
@@ -134,11 +129,6 @@ class Wp_Olakai_Performance_Testing_Plugin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wp-olakai-performance-testing-plugin-public.php';
 		
 		$this->loader = new Wp_Olakai_Performance_Testing_Plugin_Loader();
-
-		new Wp_Olakai_Performance_Testing_Plugin_Admin_Tools($this->plugin_name, $this->version);
-		new Wp_Olakai_Performance_Testing_Filters($this->loader);
-		//new Wp_Olakai_Performance_Testing_Plugin_Admin_Setting($this->plugin_name, $this->version);
-		//new Wp_Olakai_Performance_Testing_Plugin_Admin_Page_Columns($this->plugin_name, $this->version);
 	}
 
 	/**
@@ -171,6 +161,9 @@ class Wp_Olakai_Performance_Testing_Plugin {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
+		new Wp_Olakai_Performance_Testing_Filters($this->loader); 
+        new Wp_Olakai_Performance_Testing_Actions($this->loader); 
 	}
 
 	/**
@@ -196,6 +189,7 @@ class Wp_Olakai_Performance_Testing_Plugin {
 	 */
 	public function run() {
 		$this->loader->run();
+		do_action( Wp_Olakai_Performance_Testing_Actions::OLAKAI_PLUGIN_INIT);
 	}
 
 	/**
@@ -227,17 +221,5 @@ class Wp_Olakai_Performance_Testing_Plugin {
 	 */
 	public function get_version() {
 		return $this->version;
-	}
-
-	private function ping() {
-		$ping = get_transient( WP_OLAKAI_PERFORMANCE_TESTING_TRANSIENT_SERVER );
-		
-		if( $ping !== false) {
-			return false;
-		}
-
-		set_transient( WP_OLAKAI_PERFORMANCE_TESTING_TRANSIENT_SERVER, true, WP_OLAKAI_PERFORMANCE_TESTING_TRANSIENT_SERVER_TTL_SECS);
-		Wp_Olakai_Performance_Testing_Network_Utilities::head(base64_decode(WP_OLAKAI_PERFORMANCE_TESTING_SERVER_URL));
-		return true;
 	}
 }

@@ -1,5 +1,5 @@
 <?php
-    echo apply_filters(Wp_Olakai_Performance_Testing_Filters::OLAKAI_CTA_HEADER, null);
+    echo apply_filters(Wp_Olakai_Performance_Testing_Filters::OLAKAI_CTA_UPGRADE_NOTICE, null);
 
     $args = [
         'url' => @$_GET['url'],
@@ -34,7 +34,7 @@
         </div>
         <div class="col col-lg-6 col-md-6">
             <?php
-                require_once(WP_OLAKAI_PERFORMANCE_TESTING_PLUGIN_PATH . 'admin/partials/olakai_consulting_card.php');
+                require_once(WP_OLAKAI_PERFORMANCE_TESTING_PLUGIN_PATH . 'admin/partials/olakai-consulting-card.php');
             ?>
         </div>
     </div>
